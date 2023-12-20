@@ -1,0 +1,5 @@
+## Here internal variables for nginx
+nginx_packages: 
+  - certbot
+  - nginx
+

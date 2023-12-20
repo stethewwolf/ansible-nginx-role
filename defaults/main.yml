@@ -1,0 +1,6 @@
+## Here default variables for nginx
+# hosts should override them
+enable_https: false
+enable_http: true
+server_admin: "admin@test.net"
+
