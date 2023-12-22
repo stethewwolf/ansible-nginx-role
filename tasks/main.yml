@@ -6,3 +6,24 @@
     update_cache: yes
   loop: "{{ nginx_packages }}"
 
+- name: Create nginx vhosts
+  copy:
+    src: "{{ item.file }}"
+    dest: "/etc/nginx/sites-available/{{ item.domain }}.conf"
+    owner: root
+    group: root
+    mode: '0644'
+    backup: false
+  loop: "{{ nginx_vhosts }}"
+  when: nginx_vhosts is defined 
+
+- name: Enable nginx vhosts
+  file:
+    state: link
+    src: "/etc/nginx/sites-available/{{ item.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled//{{ item.domain }}.conf"
+    owner: root
+    group: root
+  loop: "{{ nginx_vhosts }}"
+  when: nginx_vhosts is defined and item.enabled
+
