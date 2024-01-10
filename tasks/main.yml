@@ -34,7 +34,7 @@
     destination_port: "80"
     jump: ACCEPT
   notify: nginx_run_iptables_save
-  when: "{{ enable_http }}"
+  when: enable_http
 
 - name: Allow connections on HTTPS ports
   ansible.builtin.iptables:
@@ -43,5 +43,5 @@
     destination_port: "443"
     jump: ACCEPT
   notify: nginx_run_iptables_save
-  when: "{{ enable_https }}"
+  when: enable_https
 
