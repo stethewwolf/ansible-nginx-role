@@ -6,6 +6,30 @@
     update_cache: yes
   loop: "{{ nginx_packages }}"
 
+- name: Nginx register certbot
+  shell: |
+    certbot -n register --agree-tos --email me@domain.example
+    touch /etc/letsencrypt/.registered
+  args:
+    creates: /etc/letsencrypt/.registered
+  when: enable_https
+
+- name: Nginx setup cronjob for cert renewal
+  cron:
+    name: certbot-renewal
+    job: "/bin/bash -lc '/usr/local/bin/certbot -q renew'"
+    minute: "0"
+    hour: "14"
+  when: enable_https
+
+- name: Nginx get ssl certificates
+  command: 'certbot -n --nginx certonly -d {{ item.domain }}'
+  args:
+    creates: '/etc/letsencrypt/live/{{ item.domain }}'
+  ignore_errors: true
+  loop: "{{ nginx_vhosts }}"
+  when: nginx_vhosts is defined and item.ssl
+
 - name: Create nginx vhosts
   copy:
     src: "{{ item.file }}"
