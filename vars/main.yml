@@ -1,5 +1,6 @@
 ## Here internal variables for nginx
 nginx_packages: 
   - certbot
+  - python3-certbot-nginx
   - nginx
 
