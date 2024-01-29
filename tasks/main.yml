@@ -41,6 +41,11 @@
   loop: "{{ nginx_vhosts }}"
   when: nginx_vhosts is defined 
 
+- name: Disable default nginx vhost
+  file:
+    state: absent
+    path: "/etc/nginx/sites-enabled/default
+
 - name: Enable nginx vhosts
   file:
     state: link
