@@ -55,6 +55,7 @@
     group: root
   loop: "{{ nginx_vhosts }}"
   when: nginx_vhosts is defined and item.enabled
+  notify: restart_nginx
 
 - name: Allow connections on HTTP ports
   ansible.builtin.iptables:
