@@ -8,11 +8,11 @@
 
 - name: Nginx register certbot
   shell: |
-    certbot -n register --agree-tos --email me@domain.example
+    certbot -n register --agree-tos --email "{{ server_admin }}"
     touch /etc/letsencrypt/.registered
   args:
     creates: /etc/letsencrypt/.registered
-  when: enable_https
+  when: enable_https and server_admin is defined
 
 - name: Nginx setup cronjob for cert renewal
   cron:
